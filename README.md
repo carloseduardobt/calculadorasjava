@@ -1,2 +1,2 @@
-Algumas Alterações do antiggo projeto
+Algumas Alterações do antigo projeto.
 
