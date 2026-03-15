@@ -1,12 +1,50 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class calculadoras {
+
+    static ArrayList<String> historico = new ArrayList<>();
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
         int opcao;
 
         do {
+
+        menu();
+        opcao = input.nextInt();
+
+        switch (opcao) {
+
+            case 1:
+                calculadoraCDI(input);
+                break;
+
+            case 2:
+                calculadoraBasica(input);
+                break;
+
+            case 3:
+                calculadoraJurosCompostos(input);
+                break;    
+
+            case 4:
+                exibirHistorico();
+                break;
+
+            case 5:
+                input.close();
+                break;
+
+        default:
+            System.out.println("Houve Algum erro, por favor selecione novamente...");
+        }
+
+        } while (opcao != 5);
+    input.close();
+    }
+
+    public static void menu() {
 
         System.out.println("========================================");
         System.out.println("       SISTEMA DE CALCULADORAS");
@@ -19,12 +57,9 @@ public class calculadoras {
         System.out.println("5 - Sair");
         System.out.println();
         System.out.print("Escolha uma opção: ");
-        
-        opcao = input.nextInt();
+    }
 
-        switch (opcao) {
-
-            case 1:
+    public static void calculadoraCDI (Scanner input) {
 
         String decisao;
         
@@ -45,6 +80,8 @@ public class calculadoras {
 
         double saldoFinal = saldo * (1 + ((14.15/100) / 12) * periodo);
 
+        historico.add("CDI | Saldo Inicial: " + saldo + " | Final: " + saldoFinal + " | Meses: "  + periodo);
+
         System.out.printf("Seu saldo final será de: R$ %.2f ", saldoFinal);
         System.out.println();
         System.out.println();
@@ -59,11 +96,12 @@ public class calculadoras {
 
         System.out.println("Retorno ao menu");
         System.out.println();
-        
-        break;
+    }
 
-        case 2:
-       
+    public static void calculadoraBasica (Scanner input) {
+
+        String decisao;
+
         do {
         
         System.out.println("========================================");
@@ -84,19 +122,27 @@ public class calculadoras {
 
         switch (op) {
             case "+":
-                System.out.printf("A soma entre %.2f e %.2f é: %.2f\n", valor1, valor2, valor1 + valor2);
+                float soma = valor1 + valor2;
+                System.out.printf("A soma entre %.2f e %.2f é: %.2f\n", valor1, valor2, soma);
+                historico.add("Operação Basica | " + valor1 + " + " + valor2 + " = " + soma);
                 break;
 
             case "-":
-                System.out.printf("A subtração entre %.2f e %.2f é: %.2f\n", valor1, valor2, valor1 - valor2);
+                float subtracao = valor1 - valor2;
+                System.out.printf("A subtração entre %.2f e %.2f é: %.2f\n", valor1, valor2, subtracao);
+                historico.add("Operação Basica | " + valor1 + " - " + valor2 + " = " + subtracao);
                 break;
 
             case "*":
+                float multiplicacao = valor1 * valor2;
                 System.out.printf("A multiplicação entre %.2f e %.2f é: %.2f\n", valor1, valor2, valor1 * valor2);
+                historico.add("Operação Basica | " + valor1 + " * " + valor2 + " = " + multiplicacao);
                 break;
 
             case "/":
+                float divisao = valor1 / valor2;
                 System.out.printf("A divisão entre %.2f e %.2f é: %.2f\n", valor1, valor2, valor1 / valor2);
+                historico.add("Operação Basica | " + valor1 + " * " + valor2 + " = " + divisao);
                 break;
 
             default:
@@ -113,13 +159,12 @@ public class calculadoras {
     
 
         System.out.println("Retorno ao menu");
-        System.out.println();
-        
-            break;
+        System.out.println();        
+    }
 
-        case 3:
+    public static void calculadoraJurosCompostos (Scanner input) {
 
-        String escolha;
+        String decisao;
 
             do {
                 
@@ -147,32 +192,36 @@ public class calculadoras {
         System.out.printf("Seu capital inicial foi de: R$ %.2f\n", capitalInicial);
         System.out.printf("Seu capital final do período foi de: R$ %.2f\n", capitalAtual);
         float lucro = capitalAtual - capitalInicial;
-        System.out.printf("Seu lucro foi de:  R$ %2.f\n", lucro);
+        
+        historico.add("Juros Compostos | Inicial: R$ " + capitalInicial + " | Final: R$ " + capitalAtual + " | Juros: " + taxaJuros + "%" + " | Período: " + meses);
+
+        System.out.printf("Seu lucro foi de:  R$ %.2f\n", lucro);
         System.out.println();
         System.out.println("Deseja fazer outro calculo?(S / N)");
         input.nextLine();
-        escolha = input.nextLine();
+        decisao = input.nextLine();
 
-         } while (escolha.equalsIgnoreCase("s"));
+         } while (decisao.equalsIgnoreCase("s"));
 
         System.out.println("Retorno ao menu");
         System.out.println();
-        
-        break;    
+                
+    }
 
-        case 4:
+    public static void exibirHistorico () {
 
-        break;
-
-        case 5:
-            input.close();
-            break;
-
-        default:
-            System.out.println("Houve Algum erro, por favor selecione novamente...");
+        System.out.println("========================================");
+        System.out.println("    HISTÓRICO DE OPERAÇÕES");
+        System.out.println("========================================");
+        System.out.println();
+        if (historico.isEmpty()) {
+            System.out.println("Nenhuma operação encontrada");
+            System.out.println();
         }
-
-        } while (opcao != 4);
-    input.close();
+        else {
+            for (String op : historico) {
+                System.out.println(op);
+            }
+        }
     }
 }
